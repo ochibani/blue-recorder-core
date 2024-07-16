@@ -1,2 +1,2 @@
 # blue-recorder-core
-Provides core functionality for the Blue Recorder screen recording application.
+It provides core functionality for the [Blue Recorder](https://github.com/xlmnxp/blue-recorder) screen recording application.
