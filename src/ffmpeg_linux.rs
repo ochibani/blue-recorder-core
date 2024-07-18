@@ -29,6 +29,7 @@ pub struct Ffmpeg {
     pub video_record_bitrate: u16,
     pub follow_mouse: bool,
     pub record_mouse: bool,
+    pub show_area: bool,
 }
 
 impl Ffmpeg {
@@ -76,6 +77,11 @@ impl Ffmpeg {
             }
         } else {
             ffmpeg_command.size(width.into(), height.into());
+        }
+
+        // Show grabbed area
+        if self.show_area {
+            ffmpeg_command.args(["-show_region", "1"]);
         }
 
         // If show mouse switch is enabled, draw the mouse to video

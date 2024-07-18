@@ -30,6 +30,7 @@ pub struct Ffmpeg {
     pub video_record_bitrate: u16,
     pub follow_mouse: bool,
     pub record_mouse: bool,
+    pub show_area: bool,
 }
 
 impl Ffmpeg {
@@ -63,6 +64,11 @@ impl Ffmpeg {
         // Video format
         ffmpeg_command.format(format);
 
+        // Show grabbed area
+        if self.show_area {
+            ffmpeg_command.args(["-show_region", "1"]);
+        }
+       
         // if show mouse switch is enabled, draw the mouse to video
         if self.record_mouse {
             ffmpeg_command.args(["-draw_mouse", "1"]);
@@ -118,7 +124,6 @@ impl Ffmpeg {
                 }
             },
         ]);
-        ffmpeg_command.print_command();
         ffmpeg_command.overwrite();
 
         // Sleep for delay
