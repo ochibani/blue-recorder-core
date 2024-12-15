@@ -1,8 +1,5 @@
 use anyhow::Result;
-use rdev::{listen, Event, EventType};
 use std::process::Command;
-use std::sync::Arc;
-use std::sync::atomic::{AtomicBool, Ordering};
 
 // Select recording mode
 #[derive(Clone, Copy)]
@@ -10,29 +7,6 @@ pub enum RecordMode {
     Area,
     Screen,
     Window,
-}
-
-// Callback function to handle events
-pub fn callback(event: Event, running: &Arc<AtomicBool>) {
-    match event.event_type {
-        EventType::ButtonPress(button) => {
-            if button == rdev::Button::Left {
-                running.store(false, Ordering::SeqCst); // Signal to stop the loop
-                std::process::exit(0); // Exit the application
-            } else if button == rdev::Button::Right {
-                // Do nothing
-            }
-        }
-        EventType::KeyPress(key) => {
-            if key == rdev::Key::Return {
-                running.store(false, Ordering::SeqCst); // Signal to stop the loop
-                std::process::exit(0); // Exit the application
-            } else {
-                // Do nothing
-            }
-        }
-        _ => {}
-    }
 }
 
 // Check if tmp input video file exist
@@ -87,15 +61,4 @@ pub fn play_record(file_name: &str) -> Result<()> {
         open::that(file_name)?;
     }
     Ok(())
-}
-
-// Start listening for global events
-pub fn start_listening<F>(callback: F) -> bool
-where
-    F: Fn(Event) + Send + 'static,
-{
-    match listen(callback) {
-        Ok(_) => true,
-        Err(_) => false,
-    }
 }
