@@ -82,7 +82,7 @@ impl Ffmpeg {
         }
 
         // Record video with specified width and hight
-        if self.window_title.is_empty() {
+        if let RecordMode::Area = mode  {
             ffmpeg_command.size(width.into(), height.into()).args([
                 "-offset_x", &x.to_string(),
                 "-offset_y", &y.to_string()
